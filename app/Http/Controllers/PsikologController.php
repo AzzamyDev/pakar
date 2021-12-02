@@ -52,7 +52,7 @@ class PsikologController extends Controller
 
         $image = $request->file('image');
         $imageName = now()->timestamp . "_" . $image->getClientOriginalName();
-        $pathImage = 'public/psikolog';
+        $pathImage = 'psikolog';
         $request->file('image')->storeAs($pathImage, $imageName);
 
         $img_url = url('storage/psikolog/' . $imageName);

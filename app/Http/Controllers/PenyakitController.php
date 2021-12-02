@@ -54,7 +54,7 @@ class PenyakitController extends Controller
 
         $image = $request->file('image');
         $imageName = now()->timestamp . "_" . $image->getClientOriginalName();
-        $pathImage = 'public/image';
+        $pathImage = 'image';
         $request->file('image')->storeAs($pathImage, $imageName);
 
         $img_url = url('storage/image/' . $imageName);
