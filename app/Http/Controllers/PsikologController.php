@@ -141,6 +141,7 @@ class PsikologController extends Controller
     public function destroy($id)
     {
         $psikolog = Psikolog::find($id);
+        Storage::disk('public')->delete('/psikolog/' . $psikolog->image_name);
         $psikolog->delete();
         return back()->with('delete', 'Berhasil dihapus');
     }
