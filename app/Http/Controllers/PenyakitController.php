@@ -141,6 +141,7 @@ class PenyakitController extends Controller
     public function destroy($id)
     {
         $penyakit = Penyakit::find($id);
+        Storage::disk('public')->delete('/image/' . $penyakit->image_name);
         $penyakit->delete();
         return back()->with('delete', 'Berhasil dihapus');
     }
