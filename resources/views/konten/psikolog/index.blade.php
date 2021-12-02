@@ -41,7 +41,7 @@
                             <tbody>
                                 @foreach ($psikolog as $item)
                                 <tr>
-                                    <td><img src="{{asset('storage/image/'.$item->image_name)}}" alt=""  style="max-width: 150px"></td>  
+                                    <td><img src="{{$item->path_img}}" alt=""  style="max-width: 150px"></td>  
                                     <td>{{$item->nama}}</td>  
                                     <td>{{$item->no_telpon}}</td>  
                                     <td>{{$item->alamat}}</td>  

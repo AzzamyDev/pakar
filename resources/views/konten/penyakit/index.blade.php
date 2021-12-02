@@ -41,7 +41,7 @@
                                 @foreach ($penyakit as $item)
                                 <tr>
                                     <td>
-                                        <img src="{{asset('storage/image/'.$item->image_name)}}" alt=""  style="max-width: 100px">
+                                        <img src="{{$item->path_img}}" alt=""  style="max-width: 100px">
                                     </td>  
                                     <td>{{$item->nama}}</td>  
                                     <td>
