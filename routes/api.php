@@ -24,3 +24,5 @@ Route::post('/profile', [AuthController::class, 'profile'])->middleware('auth:sa
 Route::post('/penyakit', [DataController::class, 'getPenyakit'])->middleware('auth:sanctum');
 Route::post('/gejala', [DataController::class, 'getGejala'])->middleware('auth:sanctum');
 Route::post('/psikolog', [DataController::class, 'getPsikolog'])->middleware('auth:sanctum');
+Route::post('/riwayat', [DataController::class, 'getRiwayat'])->middleware('auth:sanctum');
+Route::post('/riwayat/add', [DataController::class, 'addRiwayat'])->middleware('auth:sanctum');
