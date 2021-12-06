@@ -10,9 +10,9 @@
              <h2>{{$data->nama}}</h2>
          </div>
          <div class="container">
-                <div>
-                {{ html_entity_decode($data->deskripsi)}}
-            </div>
+             <div class="text-start">
+                 {!! $data->deskripsi !!}
+             </div>
          </div>
         </div>
     </div>

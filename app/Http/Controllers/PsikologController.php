@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Psikolog;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
 class PsikologController extends Controller
@@ -21,7 +23,7 @@ class PsikologController extends Controller
      */
     public function index()
     {
-        $psikolog = Psikolog::all();
+        $psikolog = User::role('psikolog')->get();
         return view('konten.psikolog.index')->with(compact('psikolog'));
     }
 
@@ -32,7 +34,7 @@ class PsikologController extends Controller
      */
     public function create()
     {
-        //
+        return view('konten.psikolog.create');
     }
 
     /**
@@ -44,28 +46,32 @@ class PsikologController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama' => 'required',
+            'name' => 'required',
             'no_telpon' => 'required',
+            'email' => 'required|unique:users|email',
             'alamat' => 'required',
             'image' => 'required',
         ]);
 
         $image = $request->file('image');
         $imageName = now()->timestamp . "_" . $image->getClientOriginalName();
-        $pathImage = 'psikolog';
+        $pathImage = 'users';
         $request->file('image')->storeAs($pathImage, $imageName);
 
-        $img_url = url('storage/psikolog/' . $imageName);
+        $img_url = url('storage/users/' . $imageName);
 
-        Psikolog::create([
-            'nama' => $request->nama,
+        $psikolog = User::create([
+            'name' => $request->name,
             'no_telpon' => $request->no_telpon,
+            'email' => $request->email,
             'alamat' => $request->alamat,
+            'password' => Hash::make('123456789'),
             'image_name' => $imageName,
             'path_img' => $img_url,
         ]);
+        $psikolog->assignRole('psikolog');
 
-        return back()->with('save', 'Berhasil di simpan');
+        return redirect()->route('psikologs.index')->with('save', 'Berhasil di simpan');
     }
 
     /**
@@ -87,8 +93,8 @@ class PsikologController extends Controller
      */
     public function edit($id)
     {
-        $data = Psikolog::find($id);
-        return back()->with('edit', $data);
+        $data = User::find($id);
+        return view('konten.psikolog.edit')->with(compact('data'));
     }
 
     /**
@@ -100,10 +106,10 @@ class PsikologController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $psikolog = Psikolog::find($id);
+        $psikolog = User::find($id);
 
         $request->validate([
-            'nama' => 'required',
+            'name' => 'required',
             'no_telpon' => 'required',
             'alamat' => 'required',
         ]);
@@ -122,7 +128,7 @@ class PsikologController extends Controller
             $img_url = $psikolog->path_img;
         }
 
-        $psikolog->nama = $request->nama;
+        $psikolog->name = $request->name;
         $psikolog->no_telpon = $request->no_telpon;
         $psikolog->alamat = $request->alamat;
         $psikolog->image_name = $imageName;
@@ -140,7 +146,7 @@ class PsikologController extends Controller
      */
     public function destroy($id)
     {
-        $psikolog = Psikolog::find($id);
+        $psikolog = User::find($id);
         Storage::disk('public')->delete('/psikolog/' . $psikolog->image_name);
         $psikolog->delete();
         return back()->with('delete', 'Berhasil dihapus');

@@ -24,10 +24,15 @@ Route::get('/', function () {
 });
 
 Auth::routes(['register' => false]);
+Route::group(['middleware' => ['role:admin']], function () {
+    Route::resource('psikologs', PsikologController::class);
+});
 
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
-Route::resource('indications', GejalaController::class);
-Route::resource('diseases', PenyakitController::class);
-Route::resource('psikologs', PsikologController::class);
+Route::group(['middleware' => ['role:admin|psikolog']], function () {
+    Route::resource('indications', GejalaController::class);
+    Route::resource('diseases', PenyakitController::class);
+});
 Route::resource('users', UserController::class);
+Route::get('search', [UserController::class, 'cari'])->name('cari_user');

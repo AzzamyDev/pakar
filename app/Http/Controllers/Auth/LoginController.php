@@ -42,11 +42,10 @@ class LoginController extends Controller
 
     protected function authenticated(Request $request, $user)
     {
-        if (Auth::user()->email == env("EMAIL_ADMIN")) {
-            return redirect('home');
+        if (Auth::user()->hasRole('user')) {
+            Auth::logout();
+            return redirect('login')->with('error', 'Tidak punya akses');
         }
-
-        Auth::logout();
-        return redirect('login')->with('error', 'Tidak punya akses');
+        return redirect('home');
     }
 }

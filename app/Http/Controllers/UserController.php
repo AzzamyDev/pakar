@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Riwayat;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
@@ -14,7 +17,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::where('email', '!=', env('EMAIL_ADMIN'))->get();
+        $users = User::role('user')->get();
         return view('konten.user.index')->with(compact('users'));
     }
 
@@ -45,9 +48,9 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(User $user)
     {
-        //
+        return view('konten.user.detail')->with(compact('user'));
     }
 
     /**
@@ -91,8 +94,64 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        //
+        if ($user->image_name != null) {
+            Storage::disk('public')->delete('/psikolog/' . $user->image_name);
+        }
+        $user->delete();
+        return redirect()->route('users.index')->with('delete', 'Berhasil dihapus');
+    }
+
+    public function cari(Request $request)
+    {
+        if ($request->ajax()) {
+
+            $output = '';
+            $cari = $request->search;
+            $users = User::where('email', $cari)->orWhere('name', 'LIKE', '%' . $cari . '%')->orWhere('no_telpon', 'LIKE', '%' . $cari . '%')->role('user')->get();
+            if ($users) {
+                foreach ($users as $user) {
+                    $output .= '<tr>' .
+                        '<td>' . $user->id . '</td>' .
+                        '<td>' . $user->name . '</td>' .
+                        '<td>' . $user->email . '</td>' .
+                        '<td>' . $user->no_telpon . '</td>' .
+                        '<td class="text-center">' .
+                        '<form action="' . route('users.show', $user) . '" method="GET">' .
+                        '<input type="hidden" name="_token" value="' . csrf_token() . '">' .
+                        '<input type="submit" class="btn btn-sm btn-block btn-success" value="Detail">' .
+                        '</form>' .
+                        '</td> ' .
+                        $this->btEdit($user) .
+                        $this->btHapus($user) .
+                        '</tr>';
+                }
+                return Response($output);
+            }
+        }
+    }
+
+    public function btEdit(User $user)
+    {
+        $result = '<td class="text-center">' .
+            '<form action="' . route('users.edit', $user) . '" method="GET">' .
+            '<input type="hidden" name="_token" value="' . csrf_token() . '">' .
+            '<input type="submit" class="btn btn-sm btn-block btn-primary" value="Edit">' .
+            '</form>' .
+            '</td>';
+        return $result;
+    }
+
+    public function btHapus(User $user)
+    {
+        $result = '<td>' .
+            '<form action="' . route('users.destroy', $user) . '" method="POST">' .
+            '<input type="hidden" name="_token" value="' . csrf_token() . '">' .
+            '<input type="hidden" name="_method" value="delete">' .
+            '<input type="submit" class="btn btn-sm btn-block btn-danger" value="Hapus">' .
+            '</form>' .
+            '</td>';
+        return $result;
     }
 }
