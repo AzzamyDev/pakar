@@ -2,15 +2,43 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Models\User;
 use App\Models\Gejala;
+use App\Models\Riwayat;
 use App\Models\Penyakit;
 use App\Models\Psikolog;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\Riwayat;
 
 class DataController extends Controller
 {
+
+    public function getAllData(Request $request)
+    {
+        $penyakit = Penyakit::all();
+        $gejala = Gejala::all();
+        $psikolog = User::role('psikolog')->get();
+        $riwayat = $request->user()->riwayat;
+        $user = [
+            'name' => $request->user()->name,
+            'email' => $request->user()->email,
+            'no_telpon' => $request->user()->no_telpon,
+            'alamat' => $request->user()->alamat,
+            'path_img' => $request->user()->path_img,
+            'image_name' => $request->user()->image_name,
+        ];
+
+        return response()->json([
+            'status' => true,
+            'penyakit' => $penyakit,
+            'gejala' => $gejala,
+            'psikolog' => $psikolog,
+            'riwayat' => $riwayat,
+            'user' => $user
+        ], 200);
+    }
+
+
     public function getPenyakit()
     {
         $penyakit = Penyakit::all();
@@ -31,7 +59,7 @@ class DataController extends Controller
 
     public function getPsikolog()
     {
-        $Psikolog = Psikolog::all();
+        $Psikolog = User::role('psikolog')->get();
         return response()->json([
             'status' => true,
             'data' => $Psikolog,

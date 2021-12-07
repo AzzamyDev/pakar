@@ -21,6 +21,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::post('/profile', [AuthController::class, 'profile'])->middleware('auth:sanctum');
 
+Route::post('/data', [DataController::class, 'getAllData'])->middleware('auth:sanctum');
 Route::post('/penyakit', [DataController::class, 'getPenyakit'])->middleware('auth:sanctum');
 Route::post('/gejala', [DataController::class, 'getGejala'])->middleware('auth:sanctum');
 Route::post('/psikolog', [DataController::class, 'getPsikolog'])->middleware('auth:sanctum');

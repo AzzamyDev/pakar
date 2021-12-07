@@ -56,7 +56,7 @@
                             <td>{{$item->name}}</td>  
                             <td>{{$item->email}}</td>  
                             <td>{{$item->no_telpon}}</td>  
-                            <td>{{$item->no_telpon}}</td>  
+                            <td>{{$item->alamat}}</td>  
                             @role('admin')
                             <td class="text-center">
                                 <form action="{{route('psikologs.edit', $item->id)}}" method="GET">

@@ -34,6 +34,7 @@ class AuthController extends Controller
             'no_telpon' => $validatedData['no_telpon'],
             'created_at' => now(),
         ]);
+        $user->assignRole('user');
 
         return response()->json([
             'status' => true,
