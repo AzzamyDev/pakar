@@ -59,9 +59,12 @@ class PenyakitController extends Controller
 
         $img_url = url('storage/image/' . $imageName);
 
+        $subDeskripsi = substr(strip_tags($request->deskripsi), 0, 200);
+
         Penyakit::create([
             'nama' => $request->nama,
             'deskripsi' => $request->deskripsi,
+            'sub_deskripsi' => $subDeskripsi,
             'image_name' => $imageName,
             'path_img' => $img_url,
         ]);
@@ -123,8 +126,11 @@ class PenyakitController extends Controller
             $img_url = $penyakit->path_img;
         }
 
+        $subDeskripsi = substr(strip_tags($request->deskripsi), 0, 200);
+
         $penyakit->nama = $request->nama;
         $penyakit->deskripsi = $request->deskripsi;
+        $penyakit->sub_deskripsi = $subDeskripsi;
         $penyakit->image_name = $imageName;
         $penyakit->path_img = $img_url;
         $penyakit->save();
