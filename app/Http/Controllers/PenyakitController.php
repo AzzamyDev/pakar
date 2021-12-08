@@ -151,4 +151,10 @@ class PenyakitController extends Controller
         $penyakit->delete();
         return back()->with('delete', 'Berhasil dihapus');
     }
+
+    public function viewSet($id)
+    {
+        $penyakit = Penyakit::find($id);
+        return view('konten.penyakit.set_gejala')->with(compact('penyakit'));
+    }
 }

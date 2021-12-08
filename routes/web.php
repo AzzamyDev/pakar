@@ -33,6 +33,10 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::group(['middleware' => ['role:admin|psikolog']], function () {
     Route::resource('indications', GejalaController::class);
     Route::resource('diseases', PenyakitController::class);
+    Route::get('diseases/{id}/set-gejala', [PenyakitController::class, 'viewSet'])
+        ->name('view_set_gejala');
 });
 Route::resource('users', UserController::class);
+Route::get('record/users', [UserController::class, 'record'])->name('record');
 Route::get('search', [UserController::class, 'cari'])->name('cari_user');
+Route::get('search/record', [UserController::class, 'getRecord'])->name('get_record');

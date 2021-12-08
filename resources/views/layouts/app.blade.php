@@ -67,6 +67,9 @@
                         <li class="nav-item me-3">
                             <a class="nav-link @if (Route::is('users.index')) active @endif" aria-current="page" href="{{route('users.index')}}"><span><i class="fas fa-user-circle"></i></span> Pengguna</a>
                         </li>
+                        <li class="nav-item me-3">
+                            <a class="nav-link @if (Route::is('record')) active @endif" aria-current="page" href="{{route('record')}}"><span><i class="fas fa-notes-medical"></i></span> Track Record Users</a>
+                        </li>
                     </ul>
                     @endguest
                     <!-- Right Side Of Navbar -->

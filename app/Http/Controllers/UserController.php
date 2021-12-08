@@ -154,4 +154,41 @@ class UserController extends Controller
             '</td>';
         return $result;
     }
+
+    public function record()
+    {
+        return view('konten.user.record');
+    }
+
+    public function getRecord(Request $request)
+    {
+        if ($request->ajax()) {
+
+            $output = '';
+            $record = [];
+            $cari = $request->search;
+            if (strlen($cari) >= 2) {
+                $users = User::where('email', $cari)->orWhere('name', 'LIKE', '%' . $cari . '%')->orWhere('no_telpon', 'LIKE', '%' . $cari . '%')->role('user')->first();
+                if ($users != null) {
+                    $record = $users->riwayat;
+                    if ($record) {
+                        foreach ($record as $item) {
+                            $output .= '<tr>' .
+                                '<td class="text-center">' . $item->id . '</td>' .
+                                '<td>' . $users->name . '</td>' .
+                                '<td>' . $item->hasil_diagnosa . '</td>' .
+                                '<td class="text-center">' . $item->persentase_diagnosa . '</td>' .
+                                '<td>' . $item->tanggal . '</td>' . '
+                           </form>' .
+                                '</td> ' .
+                                '</tr>';
+                        }
+                    }
+                } else {
+                    $output = 'kosong';
+                }
+            }
+            return Response($output);
+        }
+    }
 }

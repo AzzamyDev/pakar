@@ -21,7 +21,7 @@ class GejalaController extends Controller
      */
     public function index()
     {
-        $gejala = Gejala::orderBy('kode', 'asc')->get();
+        $gejala = Gejala::orderBy('kode', 'ASC')->get();
         return view('konten.gejala.index')->with(compact('gejala'));
     }
 

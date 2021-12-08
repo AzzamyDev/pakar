@@ -100,6 +100,7 @@ type : 'get',
 url : '{{route('cari_user')}}',
 data:{'search':$value},
 success:function(data){
+    console.log(data);
 $('tbody').html(data);
 }
 });

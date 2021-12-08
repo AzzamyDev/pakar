@@ -33,6 +33,7 @@
                                     <th style="width: 100px">Gambar</th>
                                     <th style="width: 150px">Nama Penyakit</th>
                                     <th>Deskripsi</th>
+                                    <th class="text-center" style="width: 100px">Set Gejala</th>
                                     <th class="text-center" style="width: 80px">Edit</th>
                                     <th class="text-center" style="width: 80px">Hapus</th>
                                 </tr>
@@ -52,16 +53,22 @@
                                         @endif
                                     </td>  
                                     <td class="text-center">
+                                        <form action="{{route('view_set_gejala', $item->id)}}" method="GET">
+                                            @csrf
+                                        <input type="submit" class="btn btn-sm btn-success btn-block" value="Set">
+                                        </form>
+                                    </td>  
+                                    <td class="text-center">
                                         <form action="{{route('diseases.edit', $item->id)}}" method="GET">
                                             @csrf
-                                        <input type="submit" class="btn btn-sm btn-primary" value="Edit">
+                                        <input type="submit" class="btn btn-sm btn-primary btn-block" value="Edit">
                                         </form>
                                     </td>  
                                     <td>
                                         <form action="{{route('diseases.destroy', $item->id)}}" method="POST">
                                             @csrf
                                             @method('delete')
-                                        <input type="submit" class="btn btn-sm btn-danger" value="Hapus">
+                                        <input type="submit" class="btn btn-sm btn-danger btn-block" value="Hapus">
                                         </form>
                                     </td>
                                 </tr>

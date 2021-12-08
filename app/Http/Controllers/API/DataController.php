@@ -84,4 +84,8 @@ class DataController extends Controller
             'message' => 'Riwayat berhasil di simpan'
         ]);
     }
+
+    public function hitung(Request $request)
+    {
+    }
 }
