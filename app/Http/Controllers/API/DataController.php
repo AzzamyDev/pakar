@@ -15,10 +15,10 @@ class DataController extends Controller
 
     public function getAllData(Request $request)
     {
-        $penyakit = Penyakit::all();
-        $gejala = Gejala::all();
-        $psikolog = User::role('psikolog')->get();
-        $riwayat = $request->user()->riwayat;
+        $penyakit = Penyakit::all()->sortBy('nama');
+        $gejala = Gejala::all()->sortBy('nama_gejala');
+        $psikolog = User::role('psikolog')->get()->sortBy('name');
+        $riwayat = $request->user()->riwayat->sortByDesc('tanggal');
         $user = [
             'name' => $request->user()->name,
             'email' => $request->user()->email,
@@ -41,7 +41,7 @@ class DataController extends Controller
 
     public function getPenyakit()
     {
-        $penyakit = Penyakit::all();
+        $penyakit = Penyakit::all()->sortBy('nama_gejala');
         return response()->json([
             'status' => true,
             'data' => $penyakit,
@@ -50,7 +50,7 @@ class DataController extends Controller
 
     public function getGejala()
     {
-        $Gejala = Gejala::all();
+        $Gejala = Gejala::all()->sortBy('nama_gejala');
         return response()->json([
             'status' => true,
             'data' => $Gejala,
@@ -68,7 +68,7 @@ class DataController extends Controller
 
     public function getRiwayat(Request $request)
     {
-        $riwayat = $request->user()->riwayat;
+        $riwayat = $request->user()->riwayat->sortByDesc('tanggal');
         return response()->json([
             'status' => true,
             'data' => $riwayat,
@@ -94,7 +94,7 @@ class DataController extends Controller
         $cf1 = 0;
         $cf2 = 0;
 
-        if (count($hasil) < 2) {
+        if (count($hasil) <= 1) {
             return response()->json([
                 'status' => false,
                 'result' => 'Tidak di temukan penyakit yang cocok'

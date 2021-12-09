@@ -15,6 +15,6 @@ class Riwayat extends Model
 
     public function penyakit()
     {
-        return $this->belongsTo(Penyakit::class, 'id_penyakit')->withDefault();
+        return $this->belongsTo(Penyakit::class, 'id_penyakit');
     }
 }
