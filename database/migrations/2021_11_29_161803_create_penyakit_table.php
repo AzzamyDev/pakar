@@ -18,6 +18,7 @@ class CreatePenyakitTable extends Migration
             $table->string('nama');
             $table->longText('deskripsi');
             $table->longText('sub_deskripsi');
+            $table->longText('list_gejala')->default("[]");
             $table->string('image_name');
             $table->string('path_img');
         });

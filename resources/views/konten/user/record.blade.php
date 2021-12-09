@@ -56,6 +56,7 @@ $('#search').on('keyup',function(){
                     $('#pesan').text('')
                 } else {
                     console.log(data);
+                    $('tbody').html('');
                     $('#pesan').text('Tidak ada data')
                 }
             }

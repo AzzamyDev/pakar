@@ -35,6 +35,8 @@ Route::group(['middleware' => ['role:admin|psikolog']], function () {
     Route::resource('diseases', PenyakitController::class);
     Route::get('diseases/{id}/set-gejala', [PenyakitController::class, 'viewSet'])
         ->name('view_set_gejala');
+    Route::post('diseases/{id}/set', [PenyakitController::class, 'setGejala'])
+        ->name('set_gejala');
 });
 Route::resource('users', UserController::class);
 Route::get('record/users', [UserController::class, 'record'])->name('record');

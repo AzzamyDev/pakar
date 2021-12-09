@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Gejala;
 use App\Models\Penyakit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use PhpParser\JsonDecoder;
 
 class PenyakitController extends Controller
 {
@@ -152,9 +154,20 @@ class PenyakitController extends Controller
         return back()->with('delete', 'Berhasil dihapus');
     }
 
-    public function viewSet($id)
+    public function setGejala(Request $request, $id)
     {
         $penyakit = Penyakit::find($id);
-        return view('konten.penyakit.set_gejala')->with(compact('penyakit'));
+        $penyakit->list_gejala = $request->gejala != null ? json_encode($request->gejala) : '[]';
+        $penyakit->save();
+        return redirect()->route('diseases.index');
+    }
+
+    public function viewSet($id)
+    {
+
+        $gejala = Gejala::all();
+        $penyakit = Penyakit::find($id);
+        $data = json_decode($penyakit->list_gejala);
+        return view('konten.penyakit.set_gejala')->with(compact('penyakit', 'gejala', 'data'));
     }
 }
