@@ -15,10 +15,10 @@ class DataController extends Controller
 
     public function getAllData(Request $request)
     {
-        $penyakit = Penyakit::all();
-        $gejala = Gejala::all();
+        $penyakit = Penyakit::orderBy('nama', 'ASC')->get();
+        $gejala = Gejala::orderBy('nama_gejala', 'ASC')->get();
         $psikolog = User::role('psikolog')->get();
-        $riwayat = $request->user()->riwayat->sortByDesc('tanggal');
+        $riwayat = $request->user()->riwayat;
         $user = [
             'name' => $request->user()->name,
             'email' => $request->user()->email,
@@ -41,7 +41,7 @@ class DataController extends Controller
 
     public function getPenyakit()
     {
-        $penyakit = Penyakit::all()->sortBy('nama_gejala');
+        $penyakit = Penyakit::orderBy('nama', 'ASC')->get();
         return response()->json([
             'status' => true,
             'data' => $penyakit,
@@ -50,7 +50,7 @@ class DataController extends Controller
 
     public function getGejala()
     {
-        $Gejala = Gejala::all()->sortBy('nama_gejala');
+        $Gejala = Gejala::orderBy('nama_gejala', 'ASC')->get();
         return response()->json([
             'status' => true,
             'data' => $Gejala,
@@ -68,7 +68,7 @@ class DataController extends Controller
 
     public function getRiwayat(Request $request)
     {
-        $riwayat = $request->user()->riwayat->sortByDesc('tanggal');
+        $riwayat = $request->user()->riwayat;
         return response()->json([
             'status' => true,
             'data' => $riwayat,
