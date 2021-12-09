@@ -15,9 +15,9 @@ class DataController extends Controller
 
     public function getAllData(Request $request)
     {
-        $penyakit = Penyakit::all()->sortBy('nama');
-        $gejala = Gejala::all()->sortBy('nama_gejala');
-        $psikolog = User::role('psikolog')->get()->sortBy('name');
+        $penyakit = Penyakit::all();
+        $gejala = Gejala::all();
+        $psikolog = User::role('psikolog')->get();
         $riwayat = $request->user()->riwayat->sortByDesc('tanggal');
         $user = [
             'name' => $request->user()->name,
