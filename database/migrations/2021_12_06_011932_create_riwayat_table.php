@@ -19,8 +19,7 @@ class CreateRiwayatTable extends Migration
             $table->dateTime('tanggal');
             $table->string('hasil_diagnosa');
             $table->string('persentase_diagnosa');
-            $table->integer('id_penyakit')->nullable();
-            $table->text('json_gejala');
+            $table->text('lainnya');
             $table->timestamps();
         });
     }

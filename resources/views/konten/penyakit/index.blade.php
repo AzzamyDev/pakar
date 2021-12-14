@@ -30,7 +30,6 @@
                         <table class="table table-hover table-bordered">
                             <thead class="table-info">
                                 <tr class="text-center">
-                                    <th style="width: 100px">Gambar</th>
                                     <th style="width: 150px">Nama Penyakit</th>
                                     <th>Deskripsi</th>
                                     <th class="text-center" style="width: 100px">Set Gejala</th>
@@ -40,10 +39,7 @@
                             </thead>
                             <tbody>
                                 @foreach ($penyakit as $item)
-                                <tr>
-                                    <td>
-                                        <img src="{{$item->path_img}}" alt=""  style="max-width: 100px">
-                                    </td>  
+                                <tr>  
                                     <td>{{$item->nama}}</td>  
                                     <td>
                                         @if (Str::length(strip_tags($item->deskripsi)) > 200)

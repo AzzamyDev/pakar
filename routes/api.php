@@ -15,10 +15,18 @@ use App\Http\Controllers\API\DataController;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-//Login
+//End Point
+
+//Register
 Route::post('/register', [AuthController::class, 'register']);
+
+//Login
 Route::post('/login', [AuthController::class, 'login']);
+
+//Logout
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+
+//PRofile
 Route::post('/profile', [AuthController::class, 'profile'])->middleware('auth:sanctum');
 
 Route::post('/data', [DataController::class, 'getAllData'])->middleware('auth:sanctum');
@@ -28,4 +36,4 @@ Route::post('/psikolog', [DataController::class, 'getPsikolog'])->middleware('au
 Route::post('/riwayat', [DataController::class, 'getRiwayat'])->middleware('auth:sanctum');
 Route::post('/riwayat/add', [DataController::class, 'addRiwayat'])->middleware('auth:sanctum');
 
-Route::post('hitung', [DataController::class, 'hitung'])->middleware('auth:sanctum');
+Route::post('hitung', [DataController::class, 'hitung']);

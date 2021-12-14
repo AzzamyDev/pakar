@@ -87,85 +87,133 @@ class DataController extends Controller
 
     public function hitung(Request $request)
     {
+        // get semua data penyakit
         $listPenyakit = Penyakit::all();
+
+        //inisialisasi variable
         $kodeHasil = [];
-        $hasil = json_decode($request->hasil);
-        $cfCombine = 0;
-        $cf1 = 0;
-        $cf2 = 0;
+        $result = [];
+        $arrKode = array();
 
-        if (count($hasil) <= 1) {
-            return response()->json([
-                'status' => false,
-                'result' => 'Tidak di temukan penyakit yang cocok'
-            ]);
-        }
-        ksort($hasil);
-        foreach ($hasil as $i => $value) {
-            $kodeHasil[] = $value->kode;
-
-            if ($cfCombine === 0) {
-                //define Cf1
-                $cf1 = $value->nilai_pakar * $value->nilai_user;
-
-                //define Cf2
-                $item = $hasil[$i + 1];
-                $cf2 = $item->nilai_pakar * $item->nilai_user;
-
-                //Colculate Combine
-                $jumlahCf2 = $cf2 * (1 - $cf1);
-                $cfCombine = $cf1 + $jumlahCf2;
-            } else {
-                if (count($hasil) - 1 != $i) {
-                    //define Cf2
-                    $item = $hasil[$i + 1];
-                    $cf2 = $item->nilai_pakar * $item->nilai_user;
-
-                    //Colculate Combine
-                    $jumlahCf2 = $cf2 * (1 - $cfCombine);
-                    $cfCombine += $jumlahCf2;
-                } else {
-                }
-            }
+        //mengambil data dari user melalui request
+        $gejalaUser = json_decode($request->hasil);
+        //get kode gejala user
+        foreach ($gejalaUser as $value) {
+            $arrKode[] = $value->kode;
         }
 
+        ///tes
         // $gejala_penyakit = json_decode($listPenyakit[2]->list_gejala);
         // sort($gejala_penyakit, SORT_STRING);
-        // sort($kodeHasil, SORT_STRING);
-        // dd($gejala_penyakit == $kodeHasil);
-        $result = 'Tidak di temukan penyakit yang cocok';
-        $id_penyakit = null;
+        // sort($arrKode, SORT_STRING);
+        // $h = array_intersect($arrKode, $gejala_penyakit);
+        // $hasil = [];
+        // for ($i = 0; $i < count($gejalaUser); $i++) {
+
+        //     for ($c = 0; $c < count($h); $c++) {
+        //         if ($gejalaUser[$i]->kode == $h[$c]) {
+        //             $hasil[] = $gejalaUser[$i];
+        //         }
+        //     }
+        // }
+        // dd($hasil);
+
+        //tesend
+
+        //proses iterasi daftar penyakit
         foreach ($listPenyakit as $key => $penyakit) {
+
+            //decode json list gejala
             $gejala_penyakit = json_decode($penyakit->list_gejala);
 
+            //pengurutan list
             sort($gejala_penyakit);
-            sort($kodeHasil);
-            if ($gejala_penyakit == $kodeHasil) {
-                $id_penyakit = $penyakit->id;
-                $result = $penyakit->nama;
-                break;
+            sort($arrKode);
+
+            //mengecek apakah gejala user ada di list gejala dari penyakit
+            $h = array_intersect($arrKode, $gejala_penyakit);
+            if ($h) {
+
+                //init variable
+                $cfFinal = 0;
+                $hasil = [];
+                for ($i = 0; $i < count($gejalaUser); $i++) {
+                    foreach ($h as $key => $value) {
+                        if ($gejalaUser[$i]->kode == $value) {
+                            $hasil[] = $gejalaUser[$i];
+                        }
+                    }
+                }
+                ksort($hasil);
+
+                //start perhitungan CF
+                if (count($hasil) == 1) {
+                    $cfCombine = $hasil[0]->nilai_pakar * $hasil[0]->nilai_user;
+                    $cfFinal = $cfCombine;
+                    $r = ([
+                        'id' => $penyakit->id,
+                        'nama_penyakit' => $penyakit->nama,
+                        'persentase' => round($cfFinal, 2) * 100,
+                    ]);
+                } else {
+                    $cfCombine = 0;
+                    $cf1 = 0;
+                    $cf2 = 0;
+                    foreach ($hasil as $i => $value) {
+                        $kodeHasil[] = $value->kode;
+
+                        if ($cfCombine === 0) {
+                            //define Cf1
+                            $cf1 = $value->nilai_pakar * $value->nilai_user;
+
+                            //define Cf2
+                            $item = $hasil[$i + 1];
+                            $cf2 = $item->nilai_pakar * $item->nilai_user;
+
+                            //Colculate Combine
+                            $jumlahCf2 = $cf2 * (1 - $cf1);
+                            $cfCombine = $cf1 + $jumlahCf2;
+                        } else {
+                            if (count($hasil) - 1 != $i) {
+                                //define Cf2
+                                $item = $hasil[$i + 1];
+                                $cf2 = $item->nilai_pakar * $item->nilai_user;
+
+                                //Colculate Combine
+                                $jumlahCf2 = $cf2 * (1 - $cfCombine);
+                                $cfCombine += $jumlahCf2;
+                            } else {
+                            }
+                        }
+                        //lempar resul combine ke variable
+                        $cfFinal = $cfCombine;
+                    }
+                }
+                //menambahkan data
+                $r = ([
+                    'id_penyakit' => $penyakit->id,
+                    'nama_penyakit' => $penyakit->nama,
+                    'persentase' => round($cfFinal, 2) * 100,
+                ]);
+                $result[] = $r;
+            } else {
             }
         }
 
-        if ($result == 'Tidak di temukan penyakit yang cocok') {
-            return response()->json([
-                'status' => false,
-                'result' => $result
-            ]);
-        }
+        $collect = collect($result);
+        $sorted = $collect->sortByDesc('persentase', SORT_NUMERIC);
+        $sorted->values()->all();
 
-        $diagnosa = Riwayat::create([
-            'user_id' => $request->user()->id,
-            'tanggal' => now(),
-            'hasil_diagnosa' => $result,
-            'persentase_diagnosa' => number_format($cfCombine * 100) . '%',
-            'id_penyakit' => $id_penyakit,
-            'json_gejala' => json_encode($kodeHasil)
-        ]);
-
+        // $riwayat = Riwayat::create([
+        //     'tanggal' => ,
+        //     'hasil_diagnosa'=> ,
+        //     'persentase_diagnosa'=> $sorted[0],
+        //     'lainnya' => $sorted,
+        // ]);
+        //mengembalikan response
         return response()->json([
             'status' => true,
-            'result' => $diagnosa
+            'data' => $sorted
         ]);
     }
 }
