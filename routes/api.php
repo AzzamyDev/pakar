@@ -36,4 +36,4 @@ Route::post('/psikolog', [DataController::class, 'getPsikolog'])->middleware('au
 Route::post('/riwayat', [DataController::class, 'getRiwayat'])->middleware('auth:sanctum');
 Route::post('/riwayat/add', [DataController::class, 'addRiwayat'])->middleware('auth:sanctum');
 
-Route::post('hitung', [DataController::class, 'hitung']);
+Route::post('hitung', [DataController::class, 'hitung'])->middleware('auth:sanctum');

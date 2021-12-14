@@ -200,20 +200,22 @@ class DataController extends Controller
             }
         }
 
-        $collect = collect($result);
-        $sorted = $collect->sortByDesc('persentase', SORT_NUMERIC);
-        $sorted->values()->all();
+        usort($result, function ($a, $b) {
+            return $b['persentase'] <=> $a['persentase'];
+        });
 
-        // $riwayat = Riwayat::create([
-        //     'tanggal' => ,
-        //     'hasil_diagnosa'=> ,
-        //     'persentase_diagnosa'=> $sorted[0],
-        //     'lainnya' => $sorted,
-        // ]);
+        //menambahkan result ke riwayat
+        Riwayat::create([
+            'user_id' => $request->user()->id,
+            'tanggal' => now()->format('Y-m-d H:i:s'),
+            'hasil_diagnosa' => $result[0]['nama_penyakit'],
+            'persentase_diagnosa' => $result[0]['persentase'] . '%',
+            'lainnya' => json_encode($result),
+        ]);
         //mengembalikan response
         return response()->json([
             'status' => true,
-            'data' => $sorted
+            'data' => $result
         ]);
     }
 }
