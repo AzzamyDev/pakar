@@ -13,6 +13,8 @@ class Riwayat extends Model
 
     protected $guarded = ['id'];
 
+    //relasi antar table
+    //berfungsi merelasikan table penyakit dan riwayat
     public function penyakit()
     {
         return $this->belongsTo(Penyakit::class, 'id_penyakit');

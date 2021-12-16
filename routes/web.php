@@ -19,17 +19,23 @@ use App\Http\Controllers\UserController;
 |
 */
 
+//rute direct jika user belum login maka di arahkan ke halaman login
 Route::get('/', function () {
     return redirect('login');
 });
 
+//Route Registrasi
 Auth::routes(['register' => false]);
+
+//route yang hanya bisa di akses oleh admin
 Route::group(['middleware' => ['role:admin']], function () {
     Route::resource('psikologs', PsikologController::class);
 });
 
+//route home
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 
+//route yang bisa di akses oleh admin & psikolog
 Route::group(['middleware' => ['role:admin|psikolog']], function () {
     Route::resource('indications', GejalaController::class);
     Route::resource('diseases', PenyakitController::class);
@@ -38,6 +44,8 @@ Route::group(['middleware' => ['role:admin|psikolog']], function () {
     Route::post('diseases/{id}/set', [PenyakitController::class, 'setGejala'])
         ->name('set_gejala');
 });
+
+//Route pendukung
 Route::resource('users', UserController::class);
 Route::get('record/users', [UserController::class, 'record'])->name('record');
 Route::get('search', [UserController::class, 'cari'])->name('cari_user');

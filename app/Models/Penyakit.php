@@ -15,6 +15,8 @@ class Penyakit extends Model
 
     public $timestamps = false;
 
+    //relasi antar table
+    //berfungsi merelasikan table penyakit dan riwayat
     public function penyakit()
     {
         return $this->hasMany(Riwayat::class, 'id_penyakit');

@@ -12,9 +12,13 @@ class Gejala extends Model
     //variable $table untuk set ke table yg d tuju
     protected $table = 'gejala';
 
+    //berfungsi agar hanya field "id" saja yg tidak bsa di rubah
     protected $guarded = ['id'];
 
+    //berfungsi untuk enabling timestamps created_at & updated_at
     public $timestamps = false;
+
+    //berfungsi untuk memberitahu laravel bahwa field check itu boolean
     protected $casts = [
         'check' => 'boolean',
     ];

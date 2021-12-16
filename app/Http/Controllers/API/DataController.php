@@ -15,10 +15,10 @@ class DataController extends Controller
 
     public function getAllData(Request $request)
     {
-        $penyakit = Penyakit::orderBy('nama', 'ASC')->get();
-        $gejala = Gejala::orderBy('nama_gejala', 'ASC')->get();
-        $psikolog = User::role('psikolog')->get();
-        $riwayat = $request->user()->riwayat;
+        $penyakit = Penyakit::orderBy('nama', 'ASC')->get(); // getdata penyakit berdasarkan nama dengan method ASC
+        $gejala = Gejala::orderBy('nama_gejala', 'ASC')->get(); //get data gejala
+        $psikolog = User::role('psikolog')->get(); // get User yang mempunyai role psikolog
+        $riwayat = $request->user()->riwayat; //get riwayat user
         $user = [
             'name' => $request->user()->name,
             'email' => $request->user()->email,
@@ -66,6 +66,7 @@ class DataController extends Controller
         ], 200);
     }
 
+
     public function getRiwayat(Request $request)
     {
         $riwayat = $request->user()->riwayat;
@@ -75,16 +76,7 @@ class DataController extends Controller
         ], 200);
     }
 
-    public function addRiwayat(Request $request)
-    {
-        Riwayat::create($request->all());
-
-        return response()->json([
-            'status' => true,
-            'message' => 'Riwayat berhasil di simpan'
-        ]);
-    }
-
+    //method hitung
     public function hitung(Request $request)
     {
         // get semua data penyakit

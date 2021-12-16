@@ -60,6 +60,7 @@ class PsikologController extends Controller
 
         $img_url = url('storage/users/' . $imageName);
 
+        //Create psikolog pada Model User
         $psikolog = User::create([
             'name' => $request->name,
             'no_telpon' => $request->no_telpon,
@@ -69,6 +70,7 @@ class PsikologController extends Controller
             'image_name' => $imageName,
             'path_img' => $img_url,
         ]);
+        //Assign User sebagai Psikolog (daika user ini sebagai role psikolog)
         $psikolog->assignRole('psikolog');
 
         return redirect()->route('psikologs.index')->with('save', 'Berhasil di simpan');
@@ -113,6 +115,7 @@ class PsikologController extends Controller
             'no_telpon' => 'required',
             'alamat' => 'required',
         ]);
+
 
         $image = $request->file('image');
         if ($image != null) {

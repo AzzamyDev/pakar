@@ -47,6 +47,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    //relasi antar table
+    //berfungsi merelasikan table user dan riwayat
     public function riwayat()
     {
         return $this->hasMany(Riwayat::class, 'user_id');

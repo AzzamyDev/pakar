@@ -6,21 +6,25 @@
         <div class="col-md-8 mb-3">
             <div class="card mb-3">
                 <div class="card-header">{{ __('Daftar Gejala') }}
+                {{-- jika ada session save maka mnculkan alert --}}
                 @if (session('save'))
-                    <div class="alert alert-success mt-2">
+                <div class="alert alert-success mt-2">
                         {{ session('save') }}
                     </div>
-                @endif
+                    @endif
+                {{-- jika ada session delete maka mnculkan alert --}}
                 @if (session('delete'))
-                    <div class="alert alert-danger mt-2">
-                        {{ session('delete') }}
-                    </div>
+                <div class="alert alert-danger mt-2">
+                    {{ session('delete') }}
+                </div>
                 @endif
+                {{-- jika ada session update maka mnculkan alert --}}
                 @if (session('update'))
-                    <div class="alert alert-success mt-2">
-                        {{ session('update') }}
-                    </div>
+                <div class="alert alert-success mt-2">
+                    {{ session('update') }}
+                </div>
                 @endif
+                {{-- jika ada session edit maka mnculkan alert --}}
                 @if (session('edit'))
                    <input type="hidden" name="" value="{{$data = session('edit')}}"> 
                 @endif
@@ -38,6 +42,7 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {{-- looping data yang di lempar dari controller --}}
                                 @foreach ($gejala as $item)
                                 <tr>
                                     <td>{{$item->kode}}</td>  
@@ -68,6 +73,7 @@
                 <div class="card-body">
                     <form action=
                     "
+                    {{-- mengubah action form sesuai session --}}
                      @if (session('edit'))
                     {{route('indications.update', $data->id)}}
                     @else
@@ -75,7 +81,9 @@
                     @endif
                     "
                     method="POST" >
+                    {{-- simpbol @CSRF berfungsi untuk memberi tahu laravel kalo ini request dari aplikasi yang valid --}}
                         @csrf
+                        {{-- jika sessionnya edit maka ubah metod form nya ke put, karna di bawwan html tidak ada method put --}}
                          @if (session('edit'))
                          @method('put')
                         @endif

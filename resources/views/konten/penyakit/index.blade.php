@@ -42,11 +42,7 @@
                                 <tr>  
                                     <td>{{$item->nama}}</td>  
                                     <td>
-                                        @if (Str::length(strip_tags($item->deskripsi)) > 200)
-                                            {{substr(strip_tags($item->deskripsi), 0, 200) . '...'}} <span><a href="{{route('diseases.show', $item->id)}}" class="link-info">Selengkapnya..</a></span>
-                                        @else
-                                            {{strip_tags($item->deskripsi)}}
-                                        @endif
+                                        {{$item->sub_deskripsi}}
                                     </td>  
                                     <td class="text-center">
                                         <form action="{{route('view_set_gejala', $item->id)}}" method="GET">
