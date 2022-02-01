@@ -21,4 +21,8 @@ class Penyakit extends Model
     {
         return $this->hasMany(Riwayat::class, 'id_penyakit');
     }
+    public function gejala()
+    {
+        return $this->belongsToMany(Gejala::class)->withPivot('nilai_pakar');
+    }
 }

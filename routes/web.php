@@ -3,10 +3,11 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\RuleController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\GejalaController;
 use App\Http\Controllers\PenyakitController;
 use App\Http\Controllers\PsikologController;
-use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,6 +40,7 @@ Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::group(['middleware' => ['role:admin|psikolog']], function () {
     Route::resource('indications', GejalaController::class);
     Route::resource('diseases', PenyakitController::class);
+    Route::resource('rules', RuleController::class);
     Route::get('diseases/{id}/set-gejala', [PenyakitController::class, 'viewSet'])
         ->name('view_set_gejala');
     Route::post('diseases/{id}/set', [PenyakitController::class, 'setGejala'])

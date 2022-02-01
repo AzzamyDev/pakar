@@ -25,7 +25,7 @@ class PenyakitController extends Controller
      */
     public function index()
     {
-        $penyakit = Penyakit::orderBy('nama', 'asc')->get();
+        $penyakit = Penyakit::orderBy('id', 'asc')->get();
         return view('konten.penyakit.index')->with(compact('penyakit'));
     }
 
@@ -36,7 +36,7 @@ class PenyakitController extends Controller
      */
     public function create()
     {
-        //
+        return view('konten.penyakit.create');
     }
 
     /**
@@ -62,16 +62,19 @@ class PenyakitController extends Controller
         $img_url = url('storage/image/' . $imageName);
 
         $subDeskripsi = substr(strip_tags($request->deskripsi), 0, 200);
+        $count = Penyakit::all()->count();
+        $kode = 'P' . ($count + 1);
 
         Penyakit::create([
             'nama' => $request->nama,
+            'kode' => $kode,
             'deskripsi' => $request->deskripsi,
             'sub_deskripsi' => $subDeskripsi,
             'image_name' => $imageName,
             'path_img' => $img_url,
         ]);
 
-        return back()->with('save', 'Berhasil di simpan');
+        return redirect()->route('diseases.index')->with('save', 'Berhasil di simpan');
     }
 
     /**
@@ -95,7 +98,7 @@ class PenyakitController extends Controller
     public function edit($id)
     {
         $data = Penyakit::find($id);
-        return back()->with('edit', $data);
+        return view('konten.penyakit.edit')->with(compact('data'));
     }
 
     /**
@@ -137,7 +140,7 @@ class PenyakitController extends Controller
         $penyakit->path_img = $img_url;
         $penyakit->save();
 
-        return back()->with('update', 'Update berhasil');
+        return redirect()->route('diseases.index')->with('update', 'Update berhasil');
     }
 
     /**

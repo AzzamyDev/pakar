@@ -43,4 +43,4 @@ Route::post('/psikolog', [DataController::class, 'getPsikolog'])->middleware('au
 //route untuk mengambil data riwayat saja
 Route::post('/riwayat', [DataController::class, 'getRiwayat'])->middleware('auth:sanctum');
 //route untuk menghitung CF 
-Route::post('hitung', [DataController::class, 'hitung']);
+Route::post('hitung', [DataController::class, 'hitung'])->middleware('auth:sanctum');

@@ -21,7 +21,7 @@ class GejalaController extends Controller
      */
     public function index()
     {
-        $gejala = Gejala::orderBy('kode', 'ASC')->get();
+        $gejala = Gejala::orderBy('id', 'ASC')->get();
         return view('konten.gejala.index')->with(compact('gejala'));
     }
 
@@ -32,7 +32,7 @@ class GejalaController extends Controller
      */
     public function create()
     {
-        //
+        return view('konten.gejala.create');
     }
 
     /**
@@ -43,19 +43,17 @@ class GejalaController extends Controller
      */
     public function store(Request $request)
     {
-        $validator = $request->validate([
-            'kode' => ['required', 'unique:gejala'],
-            'nilai' => ['required', 'numeric', 'max:1', 'min:0'],
-            'nama' => 'required',
+        $validated = $request->validate([
+            'kode' => 'required',
+            'nama_gejala' => 'required',
+        ], [
+            'kode.required' => 'Kode gejala harus di isi',
+            'nama_gejala.required' => 'Nama gejala harus di isi',
         ]);
 
-        Gejala::create([
-            'kode' => $request->kode,
-            'nilai_pakar' => $request->nilai,
-            'nama_gejala' => $request->nama,
-        ]);
+        Gejala::create($validated);
 
-        return back()->with('save', 'Berhasil di simpan');
+        return redirect()->route('indications.index')->with('save', 'Berhasil di simpan');
     }
 
     /**
@@ -66,8 +64,6 @@ class GejalaController extends Controller
      */
     public function show($id)
     {
-        $data = Gejala::find($id);
-        return back()->with('edit', $data);
     }
 
     /**
@@ -78,6 +74,8 @@ class GejalaController extends Controller
      */
     public function edit($id)
     {
+        $data = Gejala::find($id);
+        return view('konten.gejala.edit')->with(compact('data'));
     }
 
     /**
@@ -89,18 +87,17 @@ class GejalaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
+        $validated = $request->validate([
             'kode' => 'required',
-            'nilai' => ['required', 'numeric', 'max:1', 'min:0'],
-            'nama' => 'required',
+            'nama_gejala' => 'required',
+        ], [
+            'kode.required' => 'Kode gejala harus di isi',
+            'nama_gejala.required' => 'Nama gejala harus di isi',
         ]);
         $gejala = Gejala::find($id);
-        $gejala->kode = $request->kode;
-        $gejala->nilai_pakar = $request->nilai;
-        $gejala->nama_gejala = $request->nama;
-        $gejala->save();
+        $gejala->update($validated);
 
-        return back()->with('update', 'Update berhasil');
+        return redirect()->route('indications.index')->with('update', 'Update berhasil');
     }
 
     /**

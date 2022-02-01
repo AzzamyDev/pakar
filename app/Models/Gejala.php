@@ -22,4 +22,9 @@ class Gejala extends Model
     protected $casts = [
         'check' => 'boolean',
     ];
+
+    public function penyakit()
+    {
+        return $this->belongsToMany(Penyakit::class)->withPivot('nilai_pakar');
+    }
 }

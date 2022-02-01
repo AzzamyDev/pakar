@@ -17,9 +17,6 @@ class CreateGejalaTable extends Migration
             $table->id();
             $table->string('kode');
             $table->string('nama_gejala');
-            $table->double('nilai_pakar');
-            $table->double('nilai_user')->default(0);
-            $table->boolean('check')->default(false);
         });
     }
 
