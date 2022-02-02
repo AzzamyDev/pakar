@@ -15,41 +15,44 @@
              @guest
                  <h5 class="text-primary">Selamat Datang</h5>
              @else
-                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                     <li class="nav-item me-3">
-                         <a class="nav-link @if (Route::is(['diseases.index', 'diseases.create', 'diseases.edit'])) active rounded text-white @endif" aria-current="page"
-                             href="{{ route('diseases.index') }}"><span><i class="fas fa-bacteria"></i></span>
-                             Penyakit</a>
-                     </li>
-                     <li class="nav-item me-3">
-                         <a class="nav-link @if (Route::is(['indications.index', 'indications.create', 'indications.edit'])) active rounded text-white @endif" aria-current="page"
-                             href="{{ route('indications.index') }}"><span><i
-                                     class="fab fa-creative-commons-sampling"></i></span> Gejala</a>
-                     </li>
-                     <li class="nav-item me-3">
-                         <a class="nav-link @if (Route::is(['rules.index', 'rules.create', 'rules.edit'])) active rounded text-white  @endif" aria-current="page"
-                             href="{{ route('rules.index') }}"><span><i class="fas fa-cogs"></i></span> Rules</a>
-                     </li>
-                     @role('admin')
+                 @role('psikolog|admin')
+                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                          <li class="nav-item me-3">
-                             <a class="nav-link @if (Route::is('psikologs.index')) active rounded text-white @endif" aria-current="page"
-                                 href="{{ route('psikologs.index') }}"><span><i class="fas fa-users"></i></span>
-                                 Psikolog</a>
+                             <a class="nav-link @if (Route::is(['diseases.index', 'diseases.create', 'diseases.edit'])) active rounded text-white @endif" aria-current="page"
+                                 href="{{ route('diseases.index') }}"><span><i class="fas fa-bacteria"></i></span>
+                                 Penyakit</a>
                          </li>
+                         <li class="nav-item me-3">
+                             <a class="nav-link @if (Route::is(['indications.index', 'indications.create', 'indications.edit'])) active rounded text-white @endif" aria-current="page"
+                                 href="{{ route('indications.index') }}"><span><i
+                                         class="fab fa-creative-commons-sampling"></i></span> Gejala</a>
+                         </li>
+                         <li class="nav-item me-3">
+                             <a class="nav-link @if (Route::is(['rules.index', 'rules.create', 'rules.edit'])) active rounded text-white  @endif" aria-current="page"
+                                 href="{{ route('rules.index') }}"><span><i class="fas fa-cogs"></i></span> Rules</a>
+                         </li>
+                         @role('admin')
+                             <li class="nav-item me-3">
+                                 <a class="nav-link @if (Route::is('psikologs.index')) active rounded text-white @endif" aria-current="page"
+                                     href="{{ route('psikologs.index') }}"><span><i class="fas fa-users"></i></span>
+                                     Psikolog</a>
+                             </li>
+
+                         @else
+
+                         @endrole
                          <li class="nav-item me-3">
                              <a class="nav-link @if (Route::is('users.index')) active rounded text-white @endif" aria-current="page"
                                  href="{{ route('users.index') }}"><span><i class="fas fa-user-circle"></i></span>
                                  Pengguna</a>
                          </li>
-                     @else
-
-                     @endrole
-                     <li class="nav-item me-3">
-                         <a class="nav-link @if (Route::is('record')) active rounded text-white @endif" aria-current="page"
-                             href="{{ route('record') }}"><span><i class="fas fa-notes-medical"></i></span> Track
-                             Record Users</a>
-                     </li>
-                 </ul>
+                         <li class="nav-item me-3">
+                             <a class="nav-link @if (Route::is('record')) active rounded text-white @endif" aria-current="page"
+                                 href="{{ route('record') }}"><span><i class="fas fa-notes-medical"></i></span> Track
+                                 Record Users</a>
+                         </li>
+                     </ul>
+                 @endrole
              @endguest
              <!-- Right Side Of Navbar -->
              <ul class="navbar-nav ml-auto">
@@ -67,7 +70,7 @@
                          </li>
                      @endif
                  @else
-                     <li style="width: 160px" class="nav-item row ml-1 align-items-center">
+                     <li style="width:250px" class="nav-item row ml-1 align-items-center">
                          <div class="col-md-auto mr-3 col-sm-12 mb-1 mb-md-0 p-0">
                              <h6 class="text-white m-0 ">{{ Auth::user()->name }}</h6>
                          </div>

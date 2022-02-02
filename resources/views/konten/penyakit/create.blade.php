@@ -10,17 +10,16 @@
                         <form action="{{ route('diseases.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="mb-3 custom-file">
-                                <label for="formFile" class="form-label">Input Gambar</label>
-                                <input class="custom-file-input" type="file" id="formFile" name="image"
-                                    aria-describedby="inputGroupFileAddon01">
-                                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                                <input required class="custom-file-input" type="file" id="formFile" name="image"
+                                    accept="image/*" aria-describedby="formFile">
+                                <label class="custom-file-label" for="formFile">Pilih Gambar</label>
                                 <span class="text-danger">@error('image')
                                         {{ $message }}
                                     @enderror</span>
                             </div>
                             <div class="mb-3">
                                 <label for="nama" class="form-label">Nama Penyakit</label>
-                                <input autocomplete="off" type="text" class="form-control" id="nama"
+                                <input required autocomplete="off" type="text" class="form-control" id="nama"
                                     placeholder="Masukan nama penyakit" name="nama"
                                     value="@if (session('edit')){{ $data->nama }}@endif{{ old('nama') }}">
                                 <span class="text-danger">@error('nama')
@@ -29,7 +28,7 @@
                             </div>
                             <div class="mb-3">
                                 <label for="deskripsi" class="form-label">Deskripsi</label>
-                                <textarea class="form-control" id="deskripsi" rows="3"
+                                <textarea required class="form-control" id="deskripsi" rows="3"
                                     name="deskripsi">@if (session('edit')){{ $data->deskripsi }}@endif{{ old('deskripsi') }}</textarea>
                                 <span class="text-danger">@error('deskripsi')
                                         {{ $message }}

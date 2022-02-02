@@ -10,11 +10,11 @@ use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    //Construktor untuk Auth
+    public function __construct()
+    {
+        $this->middleware(['auth', 'role:admin|psikolog']);
+    }
     public function index()
     {
         $users = User::role('user')->get(); // get user dengan role "user"

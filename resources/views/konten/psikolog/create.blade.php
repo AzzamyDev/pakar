@@ -17,7 +17,7 @@
                         <form action="{{ route('psikologs.store') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="mb-3 custom-file">
-                                <input class="form-control" type="file" id="formFile" name="image">
+                                <input class="custom-file-input" type="file" id="formFile" name="image">
                                 <label class="custom-file-label" for="inputGroupFile01">Input Gambar</label>
                                 <span class="text-danger">@error('image')
                                         {{ $message }}

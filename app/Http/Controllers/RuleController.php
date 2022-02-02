@@ -9,11 +9,11 @@ use Illuminate\Http\Request;
 
 class RuleController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    //Construktor untuk Auth
+    public function __construct()
+    {
+        $this->middleware(['auth', 'role:admin|psikolog']);
+    }
     public function index()
     {
         $data = Rules::orderBy('id', 'asc')->get();

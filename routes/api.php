@@ -30,6 +30,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 
 //PRofile
 Route::post('/profile', [AuthController::class, 'profile'])->middleware('auth:sanctum');
+Route::post('/password/reset', [AuthController::class, 'sendPasswordResetLinkEmail']);
 
 //route data untuk get semua data (penyakit, gejala, psikolog)
 Route::post('/data', [DataController::class, 'getAllData'])->middleware('auth:sanctum');

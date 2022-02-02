@@ -16,10 +16,9 @@
                                     alt="{{ $data->name }}" srcset="">
                             </div>
                             <div class="mb-3 custom-file">
-                                <label for="formFile" class="form-label">Input Gambar</label>
-                                <input class="custom-file-input" type="file" id="formFile" name="image"
+                                <input class="custom-file-input" type="file" id="formFile" name="image" accept="image/*"
                                     aria-describedby="inputGroupFileAddon01">
-                                <label class="custom-file-label" for="inputGroupFile01">Choose file</label>
+                                <label class="custom-file-label" for="formFile">Input Gambar</label>
                                 <span class="text-danger">@error('image')
                                         {{ $message }}
                                     @enderror</span>

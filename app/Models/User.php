@@ -51,6 +51,6 @@ class User extends Authenticatable
     //berfungsi merelasikan table user dan riwayat
     public function riwayat()
     {
-        return $this->hasMany(Riwayat::class, 'user_id');
+        return $this->hasMany(Riwayat::class, 'user_id')->latest();
     }
 }

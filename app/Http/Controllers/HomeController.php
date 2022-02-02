@@ -11,11 +11,11 @@ class HomeController extends Controller
      *
      * @return void
      */
+    //Construktor untuk Auth
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(['auth', 'role:admin|psikolog']);
     }
-
     /**
      * Show the application dashboard.
      *
